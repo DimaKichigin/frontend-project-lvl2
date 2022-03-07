@@ -1,3 +1,6 @@
-const test = 'test';
+const genDiff = (filepath1, filepath2) => {
+  const result = 'result';
+  return result;
+};
 
-console.log(test);
+export default genDiff;

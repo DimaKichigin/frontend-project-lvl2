@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-import command, { program } from 'commander';
+// import { program } from 'commander';
+import genDiff from '../src/index.js';
 
-program
-  .option('--first')
-  .option('-s, --separator <char>')
-  .option('-h, --help');
+console.log(genDiff());
 
-program.parse();
+// program
+//   .option('--first')
+//   .option('-s, --separator <char>')
+//   .option('-h, --help');
 
-const genDiff = (filepath1, filepath2) => {
-  const result = 'result';
-  return result;
-};
+// program.parse();
 
-export default genDiff;
+// const options = program.opts();
+// const limit = options.first ? 1 : undefined;
+// console.log(program.args[0].split(options.separator, limit));
