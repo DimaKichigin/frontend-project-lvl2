@@ -5,9 +5,9 @@
   "main": "./src/index.js",
   "bin": {
     "gendiff": "bin/gendiff.js"
-    },
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -27,13 +27,15 @@
   },
   "devDependencies": {
     "@jest/globals": "^27.5.1",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.0",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
+    "jest-mock": "^27.5.1",
     "npm-check-updates": "^12.3.0",
+    "prettier": "^2.5.1",
     "simple-git-hooks": "^2.7.0"
   }
 }
