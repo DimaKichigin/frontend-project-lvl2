@@ -14,24 +14,49 @@ const readFile = (file) => {
   return data;
 };
 const genDiff = (dataParse1, dataParse2) => {
-  const keys1 = _.keys(dataParse1);
-  const keys2 = _.keys(dataParse2);
-  const keys = _.union(keys1, keys2);
+  const keys = _.union(_.keys(dataParse1), _.keys(dataParse2)).sort();
+  let result = '{';
 
-  const result = {};
-  for (const key of keys) {
-    // console.log(key, _.has(dataParse1, key), _.has(dataParse2, key));
-  // if (!_.has(dataParse1, key)) {
-  //   result[key] = '-';
-  // } else if (!_.has(dataParse2, key)) {
-  //   result[key] = '+';
-  // } else if (dataParse1[key] !== dataParse2[key]) {
-  //   result[key] = ''
-  // } else {
-  //   result[key] = ''
-  // }
-  }
-  return result;
+  const states = { new: '+', old: '-', unchanged: ' ' };
+  keys.map((key) => {
+    const value1 = dataParse1[key];
+    const value2 = dataParse2[key];
+    console.log('-------------------------start--------------------');
+
+    console.log('-------------------------end--------------------');
+    if (!_.has(dataParse1, key)) {
+      result += `
+      ${states.new} ${key}: ${value2}`; // плюс, значит ключ есть только во втором
+    } else if (!_.has(dataParse2, key)) {
+      result += `
+      ${states.old} ${key}: ${value1}`; // минус значит ключ есть в первом, но нет во втором
+    } else if (dataParse1[key] !== dataParse2[key]) {
+      result += `
+      ${states.old} ${key}: ${value1} 
+      ${states.new} ${key}: ${value2}`; // минус в первом , но плюс во втором, это ключи есть, но свойства не совпадают
+    } else {
+      result += `
+      ${states.unchanged} ${key}: ${value1}`; // отсутствие плюса или минуса говорит, что ключ есть в обоих файлах, и его значения совпадают
+    }
+    return key;
+  });
+  //   if (!_.has(dataParse1, key)) {
+  //     result.push(`${states.new} ${key}: ${value2}`); // плюс, значит ключ есть только во втором
+  //   } if (!_.has(dataParse2, key)) {
+  //     result.push(`${states.old} ${key}: ${value1}`); // минус значит ключ есть в первом, но нет во втором
+  //   } else if (dataParse1[key] !== dataParse2[key]) {
+  //     result.push(`${states.old} ${key}: ${value1}`); // минус в первом , но плюс во втором, это ключи есть, но свойства не совпадают
+  //     result.push(`${states.new} ${key}: ${value2}`);
+  //   } else {
+  //     result.push(`${states.unchanged} ${key}: ${value1}`); // отсутствие плюса или минуса говорит, что ключ есть в обоих файлах, и его значения совпадают
+  //       }
+  //   return key;
+  // });
+  return `${result}
+}`;
+
+  console.log(`${result}
+}`);
 };
 export default (filepath1, filepath2) => {
   // const data = readFileSync(path, 'utf8')
@@ -48,10 +73,10 @@ export default (filepath1, filepath2) => {
   // const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf8');
 
   const file1 = readFile(filepath1);
-  const file2 = readFile(filepath1); // 2
+  const file2 = readFile(filepath2);
 
-  console.log(file1);
-  console.log(file2);
+  // console.log(file1);
+  // console.log(file2);
 
   const dataParse1 = JSON.parse(file1);
   const dataParse2 = JSON.parse(file2);
