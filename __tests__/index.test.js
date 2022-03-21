@@ -13,8 +13,8 @@ const fullPath1 = fullPath('file1.json');
 const fullPath2 = fullPath('file2.json');
 
 const expection = data('index.txt');
-// console.log('Ожидаемый txt файл: ');
-// console.log(expection);
+console.log('Ожидаемый txt файл: ');
+console.log(expection);
 test('correctness of comparing flat json files', () => {
   expect(genDiff(fullPath1, fullPath2)).toEqual(expection);
 });

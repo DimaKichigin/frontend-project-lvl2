@@ -39,8 +39,8 @@ const genDiff = (dataParse1, dataParse2) => {
   return `${result}
 }`;
 
-//   console.log(`${result}
-// }`);
+  console.log(`${result}
+}`);
 };
 export default (filepath1, filepath2) => {
   const file1 = readFile(filepath1);
@@ -48,6 +48,9 @@ export default (filepath1, filepath2) => {
 
   const dataParse1 = JSON.parse(file1);
   const dataParse2 = JSON.parse(file2);
+
   console.log('Результат работы функции: ');
-  // console.log(genDiff(dataParse1, dataParse2));
+  console.log(genDiff(dataParse1, dataParse2));
+  return genDiff(dataParse1, dataParse2);
+  // genDiff(dataParse1, dataParse2);
 };
