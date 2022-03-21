@@ -28,7 +28,7 @@ const genDiff = (dataParse1, dataParse2) => {
       ${states.old} ${key}: ${value1}`;
     } else if (dataParse1[key] !== dataParse2[key]) {
       result += `
-      ${states.old} ${key}: ${value1} 
+      ${states.old} ${key}: ${value1}
       ${states.new} ${key}: ${value2}`;
     } else {
       result += `
@@ -38,9 +38,6 @@ const genDiff = (dataParse1, dataParse2) => {
   });
   return `${result}
 }`;
-
-  console.log(`${result}
-}`);
 };
 export default (filepath1, filepath2) => {
   const file1 = readFile(filepath1);
