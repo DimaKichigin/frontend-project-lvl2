@@ -1,7 +1,7 @@
-// import { expect, toEqual } from '@jest/globals';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
+import { expect, test } from '@jest/globals';
 import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,8 +13,11 @@ const fullPath1 = fullPath('file1.json');
 const fullPath2 = fullPath('file2.json');
 
 const expection = data('index.txt');
-console.log('Ожидаемый txt файл: ');
-console.log(expection);
+
 test('correctness of comparing flat json files', () => {
   expect(genDiff(fullPath1, fullPath2)).toEqual(expection);
 });
+
+// test('flat yml file comparison', () => {
+//   expect(genDiff(filepath1, filepath2).toEqual(expection);
+// });

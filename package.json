@@ -23,6 +23,7 @@
   "homepage": "https://github.com/DimaKichigin/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.0.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
