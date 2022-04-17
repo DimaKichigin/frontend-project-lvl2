@@ -1,7 +1,6 @@
 import yaml from 'js-yaml';
-import fs from 'fs';
+
 import path from 'path';
-import readFile from './read_file.js';
 
 const extentions = {
   json: '.json',
@@ -10,10 +9,12 @@ const extentions = {
 };
 const getParse = (file) => {
   const extname = path.extname(file);
+  // console.log(file);
   let parse;
   switch (extname) {
     case extentions.json:
       parse = JSON.parse;
+      // console.log(parse);
       break;
     case extentions.yml:
     case extentions.yaml:
@@ -23,15 +24,26 @@ const getParse = (file) => {
     //   throw new Error(`Unsupported parse file extention ${extname}`);
   }
   // console.log(extname);
+
   return parse;
   // console.log(parse);
 };
+console.log(getParse('file1.json'));
 export default getParse;
+// export default (file, format) => {
+//   const parsers = {
+//     json: JSON.parse,
+//     yml: yaml.safeLoad,
+//     // ini: ini.parse,
+//   };
+//   const parse = parsers[format];
+//   console.log(parse);
+//   return parse(file);
+// };
 
 // const format = path.extname(file);
-// const data = fs.readSync(file);
 
-// const parse = (file, format) => {
+// const getParse = (file, format) => {
 //   if (format === '.json') {
 //     return JSON.parse(file);
 //   }

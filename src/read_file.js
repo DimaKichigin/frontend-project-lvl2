@@ -2,12 +2,16 @@ import { readFileSync } from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-export const readFile = (file) => {
+const readFile = (file) => {
+  // console.log(file);
   const __filename = fileURLToPath(import.meta.url);
+  // console.log(__filename);
   const __dirname = dirname(__filename);
+  // console.log(__dirname);
   const fullPath = path.resolve(__dirname, '..', '__fixtures__', file);
+  // console.log(fullPath);
   const data = readFileSync(fullPath, 'utf8');
-
+  // console.log(data);
   return data;
 };
 export default readFile;
