@@ -10,8 +10,18 @@ const readFile = (file) => {
   // console.log(__dirname);
   const fullPath = path.resolve(__dirname, '..', '__fixtures__', file);
   // console.log(fullPath);
-  const data = readFileSync(fullPath, 'utf8');
+  return fullPath;
+  // const data = readFileSync(fullPath, 'utf8');
   // console.log(data);
-  return data;
+  // return data;
 };
 export default readFile;
+
+const getData = (fullpath) => {
+  // console.log(fullpath);
+  // const pathToFile = readFileSync(path.resolve(process.cwd(), file.trim()), 'utf-8');
+  const pathToFile = readFileSync(fullpath, 'utf8');
+  const format = path.extname(fullpath).slice(1);
+  // console.log(format);
+  return getParse(pathToFile, format);
+};
