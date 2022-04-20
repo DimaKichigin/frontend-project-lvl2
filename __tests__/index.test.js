@@ -9,15 +9,18 @@ const __dirname = dirname(__filename);
 const fullPath = (file) => path.resolve(__dirname, '..', '__fixtures__', file);
 const data = (file) => readFileSync(fullPath(file), 'utf8');
 
-const fullPath1 = fullPath('file1.json');
-const fullPath2 = fullPath('file2.json');
+const filepath1 = fullPath('file1.json');
+const filepath2 = fullPath('file2.json');
+
+const ymlFile1 = fullPath('file3.yml');
+const ymlFile2 = fullPath('file4.yml');
 
 const expection = data('index.txt');
 
 test('correctness of comparing flat json files', () => {
-  expect(genDiff(fullPath1, fullPath2)).toEqual(expection);
+  expect(genDiff(filepath1, filepath2)).toEqual(expection);
 });
 
-// test('flat yml file comparison', () => {
-//   expect(genDiff(filepath1, filepath2).toEqual(expection);
-// });
+test('flat yml file comparison', () => {
+  expect(genDiff(ymlFile1, ymlFile2)).toEqual(expection);
+});

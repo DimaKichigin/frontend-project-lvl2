@@ -1,7 +1,6 @@
 import _ from 'lodash';
-
 import path from 'path';
-import { readFileSync } from 'fs';
+import { data } from './read_file.js';
 
 import getParse from './parsers.js';
 
@@ -17,17 +16,17 @@ const genDiff = (dataParse1, dataParse2) => {
 
     if (!_.has(dataParse1, key)) {
       result += `
-      ${states.new} ${key}: ${value2}`;
+  ${states.new} ${key}: ${value2}`;
     } else if (!_.has(dataParse2, key)) {
       result += `
-      ${states.old} ${key}: ${value1}`;
+  ${states.old} ${key}: ${value1}`;
     } else if (dataParse1[key] !== dataParse2[key]) {
       result += `
-      ${states.old} ${key}: ${value1}
-      ${states.new} ${key}: ${value2}`;
+  ${states.old} ${key}: ${value1}
+  ${states.new} ${key}: ${value2}`;
     } else {
       result += `
-      ${states.unchanged} ${key}: ${value1}`;
+  ${states.unchanged} ${key}: ${value1}`;
     }
     return key;
   });
@@ -35,23 +34,24 @@ const genDiff = (dataParse1, dataParse2) => {
 }`;
 };
 
-const getData = (fullpath) => {
-  // console.log(fullpath);
-  const pathToFile = readFileSync(fullpath, 'utf8');
-  const format = path.extname(fullpath).slice(1);
-  // console.log(format);
+const getData = (file) => {
+  const pathToFile = data(file);
+
+  const format = path.extname(file);
 
   return getParse(pathToFile, format);
 };
 
 export default (filepath1, filepath2) => {
-  // const dataParse1 = JSON.parse(file1);
-  // const dataParse2 = JSON.parse(file2);
+  const dataParse1 = getData(filepath1);
+  const dataParse2 = getData(filepath2);
 
-  const file1 = getData(filepath1);
-  const file2 = getData(filepath2);
-  const dataParse1 = getParse(file1);
-  const dataParse2 = getParse(file2);
-  //   // console.log(dataParse1);
-  genDiff(dataParse1, dataParse2);
+  return genDiff(dataParse1, dataParse2);
 };
+
+// export default (ymlFile1, ymlFile2) => {
+//   const dataParse1 = getData(ymlFile1);
+//   const dataParse2 = getData(ymlFile2);
+
+//   return genDiff(dataParse1, dataParse2);
+// };
