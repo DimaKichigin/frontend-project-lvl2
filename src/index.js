@@ -2,25 +2,8 @@ import path from 'path';
 import { data } from './read_file.js';
 
 // import formatter from './formatters/stylish.js';
-
+import diff from './formatters/diff.js';
 import getParse from './parsers.js';
-
-const getIndent = (depth, spacer = '*', spaceCount = 1) => spacer.repeat(spaceCount * depth);
-
-const stringify = (value, depth) => {
-  if (typeof value !== 'object' || value === null) {
-    return `${value}`;
-  }
-
-  const values = Object.entries(value);
-  const result = values.map(([key, property]) => `${getIndent(depth + 1)}${key}: ${stringify(property, depth + 2)}`);
-
-  return [
-    '{',
-    ...result,
-    `${getIndent(depth)}}`,
-  ].join('\n');
-};
 
 const getData = (file) => {
   const pathToFile = data(file);
@@ -31,14 +14,16 @@ const getData = (file) => {
   return getParse(pathToFile, format);
 };
 
-const genDiff = (filepath1, filepath2) =>
+const genDiff = (filepath1, filepath2) => {
   // console.log(filepath2);
   // console.log(stylish(getData(filepath2)));
   // console.log(getData(filepath2));
-  stringify(
+  const callDiff = diff(
     getData(filepath1),
     getData(filepath2),
   );
+  return callDiff;
+};
 // console.log(filepath2);
 // console.log(stylish(getData(filepath1)));
 export default genDiff;
