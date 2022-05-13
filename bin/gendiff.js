@@ -11,7 +11,7 @@ program
   .helpOption('-h, --help', 'output usage information')
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format <type>', 'output format')
-  .action((filepath1, filepath2) => {
+  .action((filepath1, filepath2, format = 'stylish') => {
     console.log(genDiff(filepath1, filepath2));
   });
 

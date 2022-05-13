@@ -15,12 +15,13 @@ const filepath2 = fullPath('file2.json');
 const ymlFile1 = fullPath('file3.yml');
 const ymlFile2 = fullPath('file4.yml');
 
-const expection = data('index.txt');
+const expection1 = data('expection1.txt');
+// const expection2 = ('expection2.txt');
 
 test('correctness of comparing flat json files', () => {
-  expect(genDiff(filepath1, filepath2)).toEqual(expection);
+  expect(genDiff(filepath1, filepath2)).toEqual(expection1);
 });
 
 test('flat yml file comparison', () => {
-  expect(genDiff(ymlFile1, ymlFile2)).toEqual(expection);
+  expect(genDiff(ymlFile1, ymlFile2)).toEqual(expection1);
 });
