@@ -17,7 +17,7 @@ const data = (file) => readFileSync(fullPath(file), 'utf8');
 
 const filepath1 = fullPath('file5.json');
 const filepath2 = fullPath('file6.json');
-const expection2 = ('expection2.txt');
+const expection2 = data('expection2.txt');
 
 test('correctness of comparing flat json files', () => {
   expect(genDiff(filepath1, filepath2)).toEqual(expection2);
