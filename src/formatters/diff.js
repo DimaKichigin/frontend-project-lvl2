@@ -8,6 +8,7 @@ const stringify = (obj) => {
   const result = objects.flatMap(([key, property]) => `${key}: ${stringify(property)}`);
   return [result].join('\n');
 };
+
 //   const keys = Object.entries(obj);
 //   const result = keys.reduce((acc, [key, property]) => ({ ...acc, [key]: stringify(property)) }), {});
 //   return [result].join('\n');

@@ -3,6 +3,11 @@
    "verbose": true,
    "host": "hexlet.io",
    "follow": { 
+<<<<<<< HEAD
     "f": false
 }
+=======
+    "Дополнительно": false
+  }
+>>>>>>> 04f6d2607c21b3b43a62bc71391f1dedf8b6c088
  }
