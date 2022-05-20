@@ -1,89 +1,58 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 
-// в первой функции
-// формируем один обьект из 2 файлов
-// добавляем к нему состояния
-// обновить, добавить, удалить
+const firstIndent = 2;
+const secondIndent = 4;
+const spacer = ' ';
 
-// во второй функции
-// добавляем плюсики и минусики
+const makeIndent = (n) => spacer.repeat(n);
 
-// const stringify = (data, spacer = ' ', spaceCount = 1) => {
-//   console.log(data);
-//   const iter = (node, depth) => {
-//     if (typeof node !== 'object' || node === null) {
-//       return `${node}`;
-//     }
-//     const indentSize = spaceCount * depth;
-//     const spacerIndent = spacer.repeat(indentSize);
-//     const bracketIndent = spacer.repeat(indentSize - spaceCount);
+const stringify = (value, depth) => {
+  if (!_.isPlainObject(value) || value === null) {
+    return value;
+  }
+  const result = Object
+    .entries(value)
+    .map(([key, property]) => {
+      if (_.isPlainObject(property)) {
+        return `${makeIndent(depth + firstIndent * secondIndent)}${key}: ${stringify(property, depth + secondIndent)}`;
+      }
+      return `${makeIndent(depth + firstIndent * secondIndent)}${key}: ${property}`;
+    });
 
-//     const value = Object.entries(node);
-// const result = value.map(([key, property]) =>
-// `${spacerIndent}${key}: ${iter(property, depth + 1)}`);
+  return [
+    '{',
+    ...result,
+    `${makeIndent(depth + secondIndent)}}`,
+  ].join('\n');
+};
 
-//     return [
-//       '{',
-//       ...result,
-//       `${bracketIndent}}`,
-//     ].join('\n');
-//   };
-//   return iter(data, 1);
-// };
-// export default formatter;
+const stylish = (obj) => {
+  const iter = (values, depth) => {
+    const result = values.map(({
+      key, type, value, oldValue, newValue, children,
+    }) => {
+      switch (type) {
+        case 'added':
+          return `${makeIndent(depth + firstIndent)}+ ${key}: ${stringify(value, depth)}`;
+        case 'deleted':
+          return `${makeIndent(depth + firstIndent)}- ${key}: ${stringify(value, depth)}`;
+        case 'unchanged':
+          return `${makeIndent(depth + firstIndent)}  ${key}: ${stringify(value, depth)}`;
+        case 'nested':
+          return `${makeIndent(depth + firstIndent)}  ${key}: ${iter(children, depth + firstIndent * 2)}`;
+        case 'changed':
+          return `${makeIndent(depth + firstIndent)}- ${key}: ${stringify(oldValue, depth)}\n${makeIndent(depth + firstIndent)}+ ${key}: ${stringify(newValue, depth)}`;
+        default:
+          throw new Error(`Wrong type ${type}`);
+      }
+    });
+    return [
+      '{',
+      ...result,
+      `${makeIndent(depth)}}`,
+    ].join('\n');
+  };
+  return iter(obj, 0);
+};
 
-// const getIndentation = (depth, spaceCount = 4) => ' '.repeat(depth * spaceCount - 2);
-
-// const stringify = (data, depth) => {
-//   if (typeof data !== 'object') {
-//     return `${data}`;
-//   }
-//   if (data === null) { return null; }
-//   const lines = Object
-//     .entries(data)
-//     .map(([key, value]) =>
-// `${getIndentation(depth + 1)}  ${key}: ${stringify(value, depth + 1)}`);
-//   return [
-//     '{',
-//     ...lines,
-//     `${getIndentation(depth)}  }`,
-//   ].join('\n');
-// };
-
-// function stylish(data) {
-//   const iter = (tree, depth) => tree.map((node) => {
-//     const getValue = (value, sign) =>
-// `${getIndentation(depth)}${sign} ${node.key}: ${stringify(value, depth)}\n`;
-//     switch (node.type) {
-//       case 'add':
-//         return getValue(node.val, '+');
-//       case 'remove':
-//         return getValue(node.val, '-');
-//       case 'same':
-//         return getValue(node.val, ' ');
-//       case 'updated':
-//         return `${getValue(node.val1, '-')}${getValue(node.val2, '+')}`;
-//       case 'recursion':
-//         return `${getIndentation(depth)}  ${node.key}: {\n${iter(node.children, depth + 1)
-// .join('')}${getIndentation(depth)}  }\n`;
-//       default:
-//         throw new Error(`These type is not exists: ${node.type}`);
-//     }
-//   });
-//   return `{\n${iter(data, 1).join('')}}`;
-// }
-
-// const formatter = (tree, formatterName) => {
-//   switch (formatterName) {
-//     case 'stylish':
-//       return stylish(tree);
-//     case 'plain':
-//       return plain(tree);
-//     case 'json':
-//       return JSON.stringify(tree);
-//     default:
-//       throw new Error(`Format ${formatterName} is not supported.`);
-//   }
-// };
-
-// console.log(stringify(data));
+export default stylish;
