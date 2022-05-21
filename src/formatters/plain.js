@@ -5,7 +5,7 @@ const stringify = (value) => {
   if (typeof value === 'string') {
     return `'${value}'`;
   }
-  if (typeof value === null) {
+  if (value === null) {
     return null;
   }
   return value;
