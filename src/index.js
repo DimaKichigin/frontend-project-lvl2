@@ -1,12 +1,12 @@
 import path from 'path';
-import { data } from './read_file.js';
+import getContent from './readFile.js';
 import formatter from './formatters/formatter.js';
-import diff from './formatters/diff.js';
+import diff from './diff.js';
 import getParse from './parsers.js';
 
-const getData = (file) => {
-  const pathToFile = data(file);
-  const format = path.extname(file);
+const getData = (content) => {
+  const pathToFile = getContent(content);
+  const format = path.extname(content).slice(1);
   return getParse(pathToFile, format);
 };
 

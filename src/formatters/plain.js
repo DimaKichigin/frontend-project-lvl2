@@ -13,6 +13,12 @@ const stringify = (value) => {
 
 const plain = (obj) => {
   const iter = (values, path) => {
+    if (typeof values === 'string') {
+      return `'${values}'`;
+    }
+    if (values === null) {
+      return null;
+    }
     const result = values.filter(({ type }) => type !== 'unchanged').map(({
       key, type, value, oldValue, newValue, children,
     }) => {
