@@ -1,42 +1,38 @@
 import _ from 'lodash';
 
-const makeIndent = (depth, spacer = ' ', spaceCount = 2) => spacer.repeat(depth * spaceCount - 2);
-
-const stringify = (value, depth = 1) => {
+const stringify = (value, indentBase = 4, depth = 1, replacer = '*') => {
   if (!_.isPlainObject(value) || value === null) {
     return value;
   }
   const result = Object
     .entries(value)
-    .map(([key, property]) => `${makeIndent(depth + 5)}${key}: ${stringify(property, depth + 2)}`);
+    .map(([key, property]) => `${replacer.repeat(indentBase)}${key}: ${stringify(property, indentBase)}`);
 
   return [
     '{',
     ...result,
-    `${makeIndent(depth + 3)}}`,
+    `${replacer.repeat(indentBase)}}`,
   ].join('\n');
 };
 
-const stylish = (obj) => {
+const stylish = (obj, indentBase = 4, replacer = '*') => {
   const iter = (values, depth) => {
-    // const spaceCount = 4;
-    // const firstIndent = spaceCount * depth;
-    // const secondIndent = spacer.repeat(firstIndent);
-    // const thirdIndent = spacer.repeat(firstIndent - spaceCount);
+    const indent = replacer.repeat(depth * indentBase - replacer.length);
+
     const result = values.map(({
       key, type, value, oldValue, newValue, children,
     }) => {
       switch (type) {
         case 'added':
-          return `${makeIndent(depth + 2)}+ ${key}: ${stringify(value, depth)}`;
+          return `${indent}+ ${key}: ${stringify(value, indentBase, depth + 1, replacer)}`;
         case 'deleted':
-          return `${makeIndent(depth + 2)}- ${key}: ${stringify(value, depth)}`;
+          return `${indent}- ${key}: ${stringify(value, indentBase, depth + 1, replacer)}`;
         case 'unchanged':
-          return `${makeIndent(depth + 2)}  ${key}: ${stringify(value, depth)}`;
+          return `${indent}  ${key}: ${stringify(value, indentBase, depth + 1, replacer)}`;
         case 'nested':
-          return `${makeIndent(depth + 2)}  ${key}: ${iter(children, depth + 2)}`;
+          return `${indent}  ${key}: ${iter(children, depth + 1)}`;
         case 'changed':
-          return `${makeIndent(depth + 2)}- ${key}: ${stringify(oldValue, depth)}\n${makeIndent(depth + 2)}+ ${key}: ${stringify(newValue, depth)}`;
+          return `${indent}- ${key}: ${stringify(oldValue, indentBase, depth + 1, replacer)}\n${indent}+ ${key}: ${stringify(newValue, indentBase, depth + 1, replacer)}`;
         default:
           throw new Error(`Wrong type ${type}`);
       }
@@ -44,10 +40,10 @@ const stylish = (obj) => {
     return [
       '{',
       ...result,
-      `${makeIndent(depth + 1)}}`,
+      `${replacer.repeat(depth * indentBase - indentBase)}}`,
     ].join('\n');
   };
-  return iter(obj, 0);
+  return iter(obj, 1);
 };
 
 export default stylish;
