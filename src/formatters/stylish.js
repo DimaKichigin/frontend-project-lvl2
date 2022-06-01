@@ -1,23 +1,23 @@
 import _ from 'lodash';
 
-const stringify = (value, indentBase = 4, depth = 1, replacer = '*') => {
+const stringify = (value, indentBase = 6, depth = 1, replacer = ' ') => {
   if (!_.isPlainObject(value) || value === null) {
     return value;
   }
   const result = Object
     .entries(value)
-    .map(([key, property]) => `${replacer.repeat(indentBase)}${key}: ${stringify(property, indentBase)}`);
+    .map(([key, property]) => `${replacer.repeat(indentBase * depth, depth + 1)}${key}: ${stringify(property, indentBase, depth + 1)}`);
 
   return [
     '{',
     ...result,
-    `${replacer.repeat(indentBase)}}`,
+    `${replacer.repeat(depth * indentBase - indentBase)}}`,
   ].join('\n');
 };
 
-const stylish = (obj, indentBase = 4, replacer = '*') => {
+const stylish = (obj, indentBase = 4, replacer = ' ') => {
   const iter = (values, depth) => {
-    const indent = replacer.repeat(depth * indentBase - replacer.length);
+    const indent = replacer.repeat(depth * indentBase - 2);
 
     const result = values.map(({
       key, type, value, oldValue, newValue, children,
