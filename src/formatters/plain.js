@@ -5,40 +5,40 @@ const stringify = (value) => {
   if (typeof value === 'string') {
     return `'${value}'`;
   }
-  if (value === null) {
-    return null;
-  }
   return value;
 };
 
 const plain = (obj) => {
   const iter = (values, path) => {
-    if (typeof values === 'string') {
-      return `'${values}'`;
-    }
-    if (values === null) {
-      return null;
-    }
-    const result = values.filter(({ type }) => type !== 'unchanged').map(({
-      key, type, value, oldValue, newValue, children,
-    }) => {
-      const keys = [...path, key];
-      const name = keys.join('.');
-      switch (type) {
-        case 'added':
-          return `Property '${name}' was added with value: ${stringify(value)}`;
-        case 'deleted':
-          return `Property '${name}' was removed`;
-        case 'nested':
-          return `${iter(children, keys)}`;
-        case 'changed':
-          return `Property '${name}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
-        default:
-          throw new Error(`Wrong type ${type}`);
-      }
-    });
+    // if (typeof values !== 'object') {
+    //   return values.toString();
+    // }
+    // console.log(values);
+    const result = values
+      .map(({
+        key, type, value, oldValue, newValue, children,
+      }) => {
+        if (type === 'unchanged') {
+          return stringify(value);
+        }
+        const keys = [...path, key];
+        const name = keys.join('.');
+        switch (type) {
+          case 'added':
+            return `Property '${name}' was added with value: ${stringify(value)}`;
+          case 'deleted':
+            return `Property '${name}' was removed`;
+          case 'nested':
+            return `${iter(children, keys)}`;
+          case 'changed':
+            return `Property '${name}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
+          default:
+            throw new Error(`Wrong type ${type}`);
+        }
+      });
     return result.join('\n');
   };
+
   return iter(obj, []);
 };
 export default plain;
