@@ -9,31 +9,29 @@ const stringify = (value) => {
 };
 
 const plain = (obj) => {
-  const iter = (values, path) => {
-    // if (typeof values !== 'object') {
-    //   return values.toString();
-    // }
-    // console.log(values);
-    const result = values
-      .map(({
-        key, type, value, oldValue, newValue, children,
-      }) => {
-        if (type === 'unchanged') {
-          return stringify(value);
-        }
-        const keys = [...path, key];
-        const name = keys.join('.');
+  const iter = (nodes, path) => {
+    const result = nodes
+      .filter((node) => node.type !== 'unchanged')
+      .map((node) => {
+        const { type, key } = node;
+        const keyName = [...path, key].join('.');
         switch (type) {
-          case 'added':
-            return `Property '${name}' was added with value: ${stringify(value)}`;
+          case 'added': {
+            const { value } = node;
+            return `Property '${keyName}' was added with value: ${stringify(value)}`;
+          }
           case 'deleted':
-            return `Property '${name}' was removed`;
-          case 'nested':
-            return `${iter(children, keys)}`;
-          case 'changed':
-            return `Property '${name}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
+            return `Property '${keyName}' was removed`;
+          case 'nested': {
+            const { children } = node;
+            return `${iter(children, [...path, key])}`;
+          }
+          case 'changed': {
+            const { oldValue, newValue } = node;
+            return `Property '${keyName}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
+          }
           default:
-            throw new Error(`Wrong type ${type}`);
+            throw new Error(`Wrong type ${key}`);
         }
       });
     return result.join('\n');
@@ -41,4 +39,5 @@ const plain = (obj) => {
 
   return iter(obj, []);
 };
+
 export default plain;
