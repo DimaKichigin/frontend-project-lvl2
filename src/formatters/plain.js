@@ -31,7 +31,7 @@ const plain = (obj) => {
             return `Property '${keyName}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
           }
           default:
-            throw new Error(`Wrong type ${key}`);
+            throw new Error(`Wrong type ${type}`);
         }
       });
     return result.join('\n');
