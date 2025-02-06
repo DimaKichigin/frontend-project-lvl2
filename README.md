@@ -2,14 +2,21 @@
 
 ##### Hexlet tests and linter status:
 [![Actions Status](https://github.com/DimaKichigin/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/DimaKichigin/frontend-project-lvl2/actions)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
-
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 
 This project implements a library that can be installed as a dependency in any other NPM package. The calculator outputs the difference between two compared configuration files. The result of file comparison can be output in different formats: yaml and json. It is also possible to select the comparison format
   
 The project was tested using the Jest framework. Github Actions was also used to constantly send changes to the working copy and automated build of the project. CodeClimate code analysis service was used to evaluate the code quality, detect potential problems and improve the overall cleanliness of the code base  
+
+### Technologies that were used in the project
+
+- Node.js
+- Jest
+- Commander 
+- Lodash
+- Eslint
+- Prettier
 
 ### Video demonstration of the whole project
 
